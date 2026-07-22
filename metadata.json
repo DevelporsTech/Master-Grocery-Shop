@@ -1,0 +1,6 @@
+{
+  "name": "Master Grocery Shop",
+  "description": "Pakistan's Premier E-Commerce Platform for Fresh Groceries and Premium Dry Fruits",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
