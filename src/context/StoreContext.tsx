@@ -144,9 +144,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [adminPasscode, setAdminPasscode] = useState<string>(() => {
     try {
       const saved = localStorage.getItem('mgs_admin_passcode');
-      return saved || '1984';
+      if (!saved || saved === '1984') return '1999';
+      return saved;
     } catch {
-      return '1984';
+      return '1999';
     }
   });
 
