@@ -80,7 +80,7 @@ const MainAppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFA] font-sans text-[#111827] antialiased selection:bg-[#F59E0B]/30 selection:text-[#111827]">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFA] font-sans text-[#111827] antialiased selection:bg-[#F59E0B]/30 selection:text-[#111827] overflow-x-hidden w-full max-w-full">
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
       
       <Header />

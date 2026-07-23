@@ -101,38 +101,38 @@ export const Header: React.FC = () => {
       </div>
 
       {/* 2. Main Branding & Search Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4 w-full overflow-hidden">
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="lg:hidden p-2 text-[#111827] hover:text-[#16A34A] rounded-xl hover:bg-[#FAFAFA] border border-gray-200 shadow-2xs flex items-center gap-1.5 cursor-pointer"
+          className="lg:hidden p-1.5 sm:p-2 text-[#111827] hover:text-[#16A34A] rounded-xl hover:bg-[#FAFAFA] border border-gray-200 shadow-2xs flex items-center gap-1 cursor-pointer shrink-0"
           aria-label="Open Side Panel Menu"
         >
-          <Menu className="w-6 h-6 text-[#16A34A]" />
+          <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-[#16A34A]" />
           <span className="text-xs font-bold text-[#111827] hidden xs:inline">Menu</span>
         </button>
 
         {/* Brand Logo */}
         <div
           onClick={() => navigateTo('home')}
-          className="cursor-pointer flex items-center gap-2.5 group select-none"
+          className="cursor-pointer flex items-center gap-1.5 sm:gap-2.5 group select-none shrink min-w-0"
         >
           <img
             src={brandLogo}
             alt="Master Grocery Store Logo"
-            className="w-11 h-11 object-cover rounded-xl border border-emerald-200 shadow-sm group-hover:scale-105 transition-transform"
+            className="w-9 h-9 sm:w-11 sm:h-11 object-cover rounded-xl border border-emerald-200 shadow-sm group-hover:scale-105 transition-transform shrink-0"
             referrerPolicy="no-referrer"
           />
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1">
-              <span className="text-xl font-extrabold tracking-tight text-[#111827] leading-none">
+              <span className="text-sm sm:text-xl font-extrabold tracking-tight text-[#111827] leading-none">
                 MASTER
               </span>
-              <span className="text-xl font-extrabold tracking-tight text-[#16A34A] leading-none">
+              <span className="text-sm sm:text-xl font-extrabold tracking-tight text-[#16A34A] leading-none">
                 GROCERY
               </span>
             </div>
-            <p className="text-[9px] font-semibold text-[#F59E0B] tracking-[0.2em] uppercase mt-0.5">
+            <p className="text-[8px] sm:text-[9px] font-semibold text-[#F59E0B] tracking-[0.15em] sm:tracking-[0.2em] uppercase mt-0.5 hidden xs:block truncate">
               PREMIUM QUALITY SINCE 1984
             </p>
           </div>
@@ -195,7 +195,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Action Buttons: Compare, Wishlist, Cart Drawer, Customer Account */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Compare Button */}
           <button
             onClick={() => setIsCompareModalOpen(true)}
@@ -213,7 +213,7 @@ export const Header: React.FC = () => {
           {/* Wishlist Button */}
           <button
             onClick={() => navigateTo('wishlist')}
-            className="relative p-2 text-[#6B7280] hover:text-[#111827] rounded-xl hover:bg-[#FAFAFA] transition-colors"
+            className="relative p-1.5 sm:p-2 text-[#6B7280] hover:text-[#111827] rounded-xl hover:bg-[#FAFAFA] transition-colors cursor-pointer"
             title="Wishlist"
           >
             <Heart className={`w-5 h-5 ${wishlistIds.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
@@ -224,24 +224,36 @@ export const Header: React.FC = () => {
             )}
           </button>
 
+          {/* Cart Button */}
+          <button
+            onClick={() => setIsCartDrawerOpen(true)}
+            className="relative p-1.5 sm:p-2 bg-[#16A34A] hover:bg-[#15803D] text-white rounded-xl transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer shrink-0"
+            title="Cart"
+          >
+            <ShoppingBag className="w-5 h-5" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-amber-400 text-emerald-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                {cartCount}
+              </span>
+            )}
+          </button>
 
-
-          {/* Customer Account Section - If logged in, show Account profile */}
+          {/* Customer Account Section - Desktop/Tablet (`hidden sm:flex`). On Mobile, user account is in side drawer */}
           {currentUser && (
-            <div className="flex items-center gap-1">
+            <div className="hidden sm:flex items-center gap-1 shrink-0">
               <button
                 onClick={() => navigateTo('customer-dashboard')}
-                className="px-2 sm:px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-[#16A34A] rounded-xl transition-all flex items-center gap-1.5 text-[11px] sm:text-xs font-bold shadow-2xs cursor-pointer"
+                className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-[#16A34A] rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold shadow-2xs cursor-pointer"
                 title="Account Dashboard"
               >
-                <UserCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#16A34A] shrink-0" />
-                <span className="max-w-[65px] xs:max-w-[85px] sm:max-w-[110px] truncate">
+                <UserCheck className="w-4 h-4 text-[#16A34A] shrink-0" />
+                <span className="max-w-[90px] truncate">
                   {currentUser.name.split(' ')[0]}
                 </span>
               </button>
               <button
                 onClick={logout}
-                className="p-1.5 sm:p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors shrink-0 cursor-pointer"
+                className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors shrink-0 cursor-pointer"
                 title="Sign Out"
               >
                 <LogOut className="w-4 h-4" />
