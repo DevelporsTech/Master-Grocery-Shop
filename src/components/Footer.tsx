@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import brandLogo from '../assets/logo';
 import {
   PhoneCall,
   Mail,
@@ -96,7 +95,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigateTo('home')}>
               <img
-                src={brandLogo}
+                src="/logo.jpg"
                 alt="Master Grocery Store Logo"
                 className="w-11 h-11 object-cover rounded-xl border border-emerald-200 shadow-xs"
                 referrerPolicy="no-referrer"

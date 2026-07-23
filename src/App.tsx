@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -7,6 +7,7 @@ import { QuickViewModal } from './components/QuickViewModal';
 import { CompareModal } from './components/CompareModal';
 import { CartDrawer } from './components/CartDrawer';
 import { AuthModal } from './components/AuthModal';
+import { SplashScreen } from './components/SplashScreen';
 
 import { HomeView } from './views/HomeView';
 import { ShopView } from './views/ShopView';
@@ -29,6 +30,7 @@ import { MobileBottomNav } from './components/MobileBottomNav';
 
 const MainAppContent: React.FC = () => {
   const { currentView } = useStore();
+  const [showSplash, setShowSplash] = useState(true);
 
   const renderView = () => {
     switch (currentView) {
@@ -79,6 +81,8 @@ const MainAppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA] font-sans text-[#111827] antialiased selection:bg-[#F59E0B]/30 selection:text-[#111827]">
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      
       <Header />
       <main className="flex-1 pb-20 lg:pb-0">{renderView()}</main>
       <Footer />

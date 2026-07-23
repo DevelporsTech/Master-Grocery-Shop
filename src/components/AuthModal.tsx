@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { PAKISTAN_CITIES } from '../data/mockData';
-import { X, Lock, Mail, User as UserIcon, Phone, MapPin, Eye, EyeOff, LogIn, UserPlus, ShieldCheck, KeyRound } from 'lucide-react';
+import { X, Lock, Mail, User as UserIcon, Phone, MapPin, Eye, EyeOff, LogIn, UserPlus, ShieldCheck } from 'lucide-react';
 
 export const AuthModal: React.FC = () => {
   const {
@@ -50,16 +50,6 @@ export const AuthModal: React.FC = () => {
     }, 400);
   };
 
-  const handleFillDemoCustomer = () => {
-    setEmail('customer@gmail.com');
-    setPassword('customer123');
-  };
-
-  const handleFillDemoAdmin = () => {
-    setEmail('admin@mastergrocery.pk');
-    setPassword('admin123');
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       {/* Modal Card */}
@@ -74,9 +64,11 @@ export const AuthModal: React.FC = () => {
           </button>
 
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500 text-emerald-950 font-black text-xl flex items-center justify-center font-serif shadow-md">
-              M
-            </div>
+            <img
+              src="/logo.jpg"
+              alt="Master Grocery Shop Logo"
+              className="w-11 h-11 rounded-2xl object-cover border-2 border-amber-400 shadow-md"
+            />
             <div>
               <h3 className="text-lg font-bold font-serif text-white">MASTER GROCERY SHOP</h3>
               <p className="text-[11px] text-emerald-200">Pakistan's Premier Fresh Organic Grocery Store</p>
@@ -123,7 +115,7 @@ export const AuthModal: React.FC = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="e.g. customer@gmail.com"
+                    placeholder="Enter your email address"
                     className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white text-xs"
                   />
                 </div>
@@ -175,30 +167,6 @@ export const AuthModal: React.FC = () => {
                   </>
                 )}
               </button>
-
-              {/* Demo Credentials Box */}
-              <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 space-y-2 mt-4">
-                <div className="flex items-center gap-1.5 text-amber-900 font-bold text-[11px]">
-                  <KeyRound className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Quick Demo Accounts (1-Click Fill)</span>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleFillDemoCustomer}
-                    className="flex-1 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 rounded-xl text-[10px] font-bold text-amber-950 transition-colors"
-                  >
-                    Customer Demo
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleFillDemoAdmin}
-                    className="flex-1 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 rounded-xl text-[10px] font-bold text-amber-950 transition-colors"
-                  >
-                    Store Admin Demo
-                  </button>
-                </div>
-              </div>
             </form>
           ) : (
             <form onSubmit={handleSignupSubmit} className="space-y-3">
@@ -211,7 +179,7 @@ export const AuthModal: React.FC = () => {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Chaudhry Umar Farooq"
+                    placeholder="Enter full name"
                     className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white text-xs"
                   />
                 </div>
@@ -226,7 +194,7 @@ export const AuthModal: React.FC = () => {
                     required
                     value={signupEmail}
                     onChange={(e) => setSignupEmail(e.target.value)}
-                    placeholder="e.g. umar@example.com"
+                    placeholder="Enter email address"
                     className="w-full pl-9 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white text-xs"
                   />
                 </div>

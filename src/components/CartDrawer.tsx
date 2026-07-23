@@ -50,17 +50,25 @@ export const CartDrawer: React.FC = () => {
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
         <div className="w-screen max-w-full sm:max-w-md bg-white shadow-2xl flex flex-col">
           {/* Drawer Header */}
-          <div className="p-4 bg-emerald-900 text-white flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-amber-400" />
-              <h2 className="text-base font-bold font-serif">Your Shopping Cart</h2>
-              <span className="bg-amber-400 text-emerald-950 text-xs font-black px-2 py-0.5 rounded-full">
-                {cart.length} Items
-              </span>
+          <div className="p-4 bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/logo.jpg"
+                alt="Master Grocery Store Logo"
+                className="w-9 h-9 object-cover rounded-xl border border-amber-400 shadow-2xs"
+                referrerPolicy="no-referrer"
+              />
+              <div>
+                <h2 className="text-sm font-bold font-serif text-white leading-tight">Your Shopping Cart</h2>
+                <span className="text-[10px] text-amber-300 font-bold">
+                  {cart.length} Items Selected
+                </span>
+              </div>
             </div>
             <button
               onClick={() => setIsCartDrawerOpen(false)}
-              className="p-1.5 hover:bg-emerald-800 rounded-lg text-emerald-200 transition-colors"
+              className="p-1.5 hover:bg-emerald-800 rounded-lg text-emerald-200 transition-colors cursor-pointer"
+              aria-label="Close Cart"
             >
               <X className="w-5 h-5" />
             </button>

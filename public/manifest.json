@@ -1,0 +1,18 @@
+{
+  "short_name": "Master Grocery",
+  "name": "Master Grocery Shop",
+  "description": "Master Grocery Shop - Regal Chowk, Sheikhupura. Pakistan's Premier Online Grocery Store.",
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#16A34A",
+  "theme_color": "#16A34A",
+  "display": "standalone",
+  "orientation": "portrait"
+}

@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { useStore } from '../context/StoreContext';
 import { Product, WeightOption, Order, Coupon } from '../types';
 import { CATEGORIES, COUPONS } from '../data/mockData';
-import brandLogo from '../assets/logo';
 import {
   Package,
   Plus,
@@ -72,6 +71,10 @@ export const AdminProductsView: React.FC = () => {
     updateOrderStatus,
     isAdminUnlocked,
     setIsAdminUnlocked,
+    adminPasscode,
+    unlockAdmin,
+    lockAdmin,
+    updateAdminPasscode,
     navigateTo,
     showToast,
   } = useStore();
@@ -80,6 +83,7 @@ export const AdminProductsView: React.FC = () => {
 
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState(false);
+  const [newPasscodeState, setNewPasscodeState] = useState('');
 
   // Products Filters
   const [filterQuery, setFilterQuery] = useState('');
@@ -145,12 +149,12 @@ export const AdminProductsView: React.FC = () => {
 
   const handleUnlockPin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === '1984' || pinInput.trim().toLowerCase() === 'admin' || pinInput.trim() === '') {
-      setIsAdminUnlocked(true);
-      setPinError(false);
-      showToast('Store Owner Portal Unlocked!', 'success');
-    } else {
+    const res = unlockAdmin(pinInput);
+    if (!res.success) {
       setPinError(true);
+    } else {
+      setPinError(false);
+      setPinInput('');
     }
   };
 
@@ -367,39 +371,53 @@ export const AdminProductsView: React.FC = () => {
   // Security Lock Overlay
   if (!isAdminUnlocked) {
     return (
-      <div className="max-w-md mx-auto my-16 p-8 bg-white rounded-3xl border border-[#E5E7EB] shadow-2xl text-center space-y-6">
-        <div className="w-16 h-16 bg-[#F0FDF4] text-[#16A34A] rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+      <div className="max-w-md mx-auto my-12 p-8 bg-white rounded-3xl border border-[#E5E7EB] shadow-2xl text-center space-y-6">
+        <div className="w-16 h-16 bg-emerald-50 text-[#16A34A] rounded-2xl flex items-center justify-center mx-auto shadow-inner border border-emerald-100">
           <Lock className="w-8 h-8" />
         </div>
 
         <div>
-          <span className="text-[10px] font-extrabold uppercase bg-[#FEF3C7] text-[#92400E] px-2.5 py-1 rounded-full">
-            OWNER VERIFICATION
+          <span className="text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900 px-3 py-1 rounded-full border border-amber-200">
+            PROTECTED STORE ADMIN PORTAL
           </span>
-          <h2 className="text-2xl font-bold font-serif text-[#111827] mt-2">Store Admin Control Center</h2>
-          <p className="text-xs text-[#6B7280] mt-1">
+          <h2 className="text-2xl font-bold font-serif text-[#111827] mt-3">Store Passcode Required</h2>
+          <p className="text-xs text-[#6B7280] mt-1.5 leading-relaxed">
             Master Grocery Shop • Regal Chowk, Sheikhupura, Punjab
+            <br />
+            Only store managers with the secret passcode can edit products, prices, or orders.
           </p>
         </div>
 
         <form onSubmit={handleUnlockPin} className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-[#111827] mb-1 text-left">
-              Enter Owner Passcode (Default: 1984)
+          <div className="text-left">
+            <label className="block text-xs font-bold text-[#111827] mb-1.5">
+              Enter Owner Passcode
             </label>
             <input
               type="password"
               value={pinInput}
-              onChange={(e) => setPinInput(e.target.value)}
-              placeholder="Enter passcode or click below"
-              className="w-full px-4 py-3 bg-[#FAFAFA] border border-[#E5E7EB] rounded-2xl text-sm font-mono text-center text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#16A34A]"
+              onChange={(e) => {
+                setPinInput(e.target.value);
+                if (pinError) setPinError(false);
+              }}
+              placeholder="Enter secret passcode"
+              className="w-full px-4 py-3.5 bg-[#FAFAFA] border border-[#E5E7EB] rounded-2xl text-base font-mono tracking-widest text-center text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#16A34A]"
+              autoFocus
             />
-            {pinError && <p className="text-xs text-red-500 mt-1 font-semibold">Incorrect passcode. Try '1984'.</p>}
+            {pinError ? (
+              <p className="text-xs text-red-600 mt-1.5 font-bold flex items-center gap-1 justify-center">
+                <XCircle className="w-3.5 h-3.5" /> Incorrect Passcode. Please try again.
+              </p>
+            ) : (
+              <p className="text-[11px] text-gray-500 mt-1.5 text-center">
+                Authorized store management access only
+              </p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full py-3.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-xs rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-xs rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
           >
             <Unlock className="w-4 h-4" />
             <span>Unlock Admin Control Panel</span>
@@ -408,14 +426,11 @@ export const AdminProductsView: React.FC = () => {
 
         <div className="pt-4 border-t border-[#E5E7EB]">
           <button
-            onClick={() => {
-              setIsAdminUnlocked(true);
-              showToast('1-Click Owner Access granted', 'success');
-            }}
-            className="text-xs font-bold text-[#16A34A] hover:underline flex items-center justify-center gap-1 mx-auto"
+            onClick={() => navigateTo('home')}
+            className="text-xs font-bold text-gray-600 hover:text-emerald-700 hover:underline flex items-center justify-center gap-1.5 mx-auto transition-colors"
           >
-            <ShieldCheck className="w-4 h-4" />
-            <span>1-Click Owner Quick Access (Demo Mode)</span>
+            <Store className="w-4 h-4 text-[#16A34A]" />
+            <span>Return to Public Grocery Store</span>
           </button>
         </div>
       </div>
@@ -428,7 +443,7 @@ export const AdminProductsView: React.FC = () => {
       <div className="bg-white rounded-3xl p-6 border border-[#E5E7EB] shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <img
-            src={brandLogo}
+            src="/logo.jpg"
             alt="Master Grocery Store Logo"
             className="w-14 h-14 object-cover rounded-2xl border-2 border-emerald-200 shadow-md"
             referrerPolicy="no-referrer"
@@ -1127,9 +1142,43 @@ export const AdminProductsView: React.FC = () => {
               <p className="text-gray-700 font-semibold text-sm">mastergrocerystore302@gmail.com</p>
             </div>
 
-            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
-              <span className="font-bold text-emerald-900 block text-sm">🔒 Passcode Protection:</span>
-              <p className="text-emerald-800">Owner security passcode set to: <strong className="font-mono">1984</strong></p>
+            <div className="p-5 bg-gradient-to-br from-emerald-50 to-emerald-100/70 rounded-2xl border border-emerald-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-emerald-950 block text-sm flex items-center gap-1.5">
+                    <Lock className="w-4 h-4 text-emerald-700" /> Store Owner Admin Passcode Protection
+                  </span>
+                  <p className="text-emerald-800 text-xs mt-0.5">
+                    Current Active Passcode: <strong className="font-mono bg-white px-2 py-0.5 rounded border border-emerald-300 text-emerald-900">{adminPasscode}</strong>
+                  </p>
+                </div>
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  updateAdminPasscode(newPasscodeState);
+                  setNewPasscodeState('');
+                }}
+                className="flex flex-col sm:flex-row gap-2 pt-1"
+              >
+                <input
+                  type="password"
+                  value={newPasscodeState}
+                  onChange={(e) => setNewPasscodeState(e.target.value)}
+                  placeholder="Enter new secret passcode"
+                  className="flex-1 px-3.5 py-2.5 bg-white border border-emerald-300 rounded-xl font-mono text-xs font-bold text-emerald-950 focus:outline-none focus:ring-2 focus:ring-[#16A34A]"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-xs rounded-xl shadow-xs transition-colors whitespace-nowrap cursor-pointer"
+                >
+                  Update Passcode
+                </button>
+              </form>
+              <p className="text-[11px] text-emerald-700 italic">
+                Note: Give this passcode only to trusted managers who need access to edit products or prices.
+              </p>
             </div>
           </div>
         </div>

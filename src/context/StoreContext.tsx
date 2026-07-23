@@ -48,6 +48,10 @@ interface StoreContextType {
   // Admin Access Gate
   isAdminUnlocked: boolean;
   setIsAdminUnlocked: (unlocked: boolean) => void;
+  adminPasscode: string;
+  unlockAdmin: (passcode: string) => { success: boolean; message: string };
+  lockAdmin: () => void;
+  updateAdminPasscode: (newPasscode: string) => void;
   
   // Search & Filters
   searchQuery: string;
@@ -131,11 +135,55 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [isAdminUnlocked, setIsAdminUnlocked] = useState<boolean>(() => {
     try {
       const saved = localStorage.getItem('mgs_admin_unlocked');
-      return saved !== 'false';
+      return saved === 'true';
     } catch {
-      return true;
+      return false;
     }
   });
+
+  const [adminPasscode, setAdminPasscode] = useState<string>(() => {
+    try {
+      const saved = localStorage.getItem('mgs_admin_passcode');
+      return saved || '1984';
+    } catch {
+      return '1984';
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('mgs_admin_unlocked', isAdminUnlocked ? 'true' : 'false');
+  }, [isAdminUnlocked]);
+
+  useEffect(() => {
+    localStorage.setItem('mgs_admin_passcode', adminPasscode);
+  }, [adminPasscode]);
+
+  const unlockAdmin = (inputPasscode: string) => {
+    const cleanInput = inputPasscode.trim();
+    if (cleanInput && cleanInput === adminPasscode) {
+      setIsAdminUnlocked(true);
+      showToast('Owner Portal Unlocked Successfully!', 'success');
+      return { success: true, message: 'Portal Unlocked' };
+    } else {
+      showToast('Incorrect Passcode! Access Denied.', 'warning');
+      return { success: false, message: 'Incorrect passcode.' };
+    }
+  };
+
+  const lockAdmin = () => {
+    setIsAdminUnlocked(false);
+    showToast('Admin Portal Locked.', 'info');
+  };
+
+  const updateAdminPasscode = (newPasscode: string) => {
+    const clean = newPasscode.trim();
+    if (!clean) {
+      showToast('Passcode cannot be empty.', 'warning');
+      return;
+    }
+    setAdminPasscode(clean);
+    showToast(`Passcode updated! Your new passcode is: ${clean}`, 'success');
+  };
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
@@ -185,7 +233,14 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   });
 
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('mgs_current_user');
+      return !saved;
+    } catch {
+      return true;
+    }
+  });
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('login');
 
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -258,7 +313,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       showToast(`Welcome back, ${userObj.name}!`, 'success');
       return { success: true, message: 'Logged in successfully!' };
     } else {
-      showToast('Invalid email or password. Try customer@gmail.com / customer123', 'warning');
+      showToast('Invalid email or password. Please try again.', 'warning');
       return { success: false, message: 'Invalid email or password.' };
     }
   };
@@ -304,6 +359,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const logout = () => {
     setCurrentUser(null);
+    setIsAuthModalOpen(true);
     showToast('Signed out of your account.', 'info');
   };
 
@@ -579,6 +635,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         resetProductsToDefault,
         isAdminUnlocked,
         setIsAdminUnlocked,
+        adminPasscode,
+        unlockAdmin,
+        lockAdmin,
+        updateAdminPasscode,
         searchQuery,
         setSearchQuery,
         selectedCategoryFilter,
