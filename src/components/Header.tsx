@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { PRODUCTS, CATEGORIES } from '../data/mockData';
+import brandLogo from '../assets/logo';
 import {
   ShoppingBag,
   Heart,
@@ -117,7 +118,7 @@ export const Header: React.FC = () => {
           className="cursor-pointer flex items-center gap-2.5 group select-none"
         >
           <img
-            src="/logo.jpg"
+            src={brandLogo}
             alt="Master Grocery Store Logo"
             className="w-11 h-11 object-cover rounded-xl border border-emerald-200 shadow-sm group-hover:scale-105 transition-transform"
             referrerPolicy="no-referrer"
@@ -476,7 +477,7 @@ export const Header: React.FC = () => {
               <div className="p-4 bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white flex items-center justify-between border-b border-emerald-800">
                 <div className="flex items-center gap-2.5">
                   <img
-                    src="/logo.jpg"
+                    src={brandLogo}
                     alt="Master Grocery Store Logo"
                     className="w-10 h-10 object-cover rounded-xl border-2 border-amber-400 shadow-sm"
                   />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
+import brandLogo from '../assets/logo';
 import { PAKISTAN_CITIES } from '../data/mockData';
 import { X, Lock, Mail, User as UserIcon, Phone, MapPin, Eye, EyeOff, LogIn, UserPlus, ShieldCheck } from 'lucide-react';
 
@@ -65,7 +66,7 @@ export const AuthModal: React.FC = () => {
 
           <div className="flex items-center gap-3 mb-2">
             <img
-              src="/logo.jpg"
+              src={brandLogo}
               alt="Master Grocery Shop Logo"
               className="w-11 h-11 rounded-2xl object-cover border-2 border-amber-400 shadow-md"
             />

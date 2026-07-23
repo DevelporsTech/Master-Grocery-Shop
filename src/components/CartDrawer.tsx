@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
+import brandLogo from '../assets/logo';
 import { ShoppingBag, X, Plus, Minus, Trash2, Tag, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
 
 export const CartDrawer: React.FC = () => {
@@ -53,7 +54,7 @@ export const CartDrawer: React.FC = () => {
           <div className="p-4 bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <img
-                src="/logo.jpg"
+                src={brandLogo}
                 alt="Master Grocery Store Logo"
                 className="w-9 h-9 object-cover rounded-xl border border-amber-400 shadow-2xs"
                 referrerPolicy="no-referrer"

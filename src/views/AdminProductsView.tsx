@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useStore } from '../context/StoreContext';
 import { Product, WeightOption, Order, Coupon } from '../types';
 import { CATEGORIES, COUPONS } from '../data/mockData';
+import brandLogo from '../assets/logo';
 import {
   Package,
   Plus,
@@ -443,7 +444,7 @@ export const AdminProductsView: React.FC = () => {
       <div className="bg-white rounded-3xl p-6 border border-[#E5E7EB] shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <img
-            src="/logo.jpg"
+            src={brandLogo}
             alt="Master Grocery Store Logo"
             className="w-14 h-14 object-cover rounded-2xl border-2 border-emerald-200 shadow-md"
             referrerPolicy="no-referrer"

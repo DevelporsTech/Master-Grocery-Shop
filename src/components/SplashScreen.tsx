@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import brandLogo from '../assets/logo';
 import { ShoppingBag, Sparkles, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 interface SplashScreenProps {
@@ -65,7 +66,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           
           {/* App Official Logo Image */}
           <img
-            src="/logo.jpg"
+            src={brandLogo}
             alt="Master Grocery Shop Logo"
             className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl object-cover border-4 border-amber-400 shadow-2xl transform transition-transform duration-500 hover:scale-105"
           />
